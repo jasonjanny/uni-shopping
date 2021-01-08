@@ -13,15 +13,8 @@
       indicator-active-color="#bc9ee5"
     >
       <!-- 在 vue 单文件中列表渲染需要用 v-for，通过脚手架编译后会自动变成 wx:for -->
-      <swiper-item
-        v-for="item in swiperData"
-        :key="item.goods_id"
-      >
-        <image
-          class="swiper_image"
-          :src="item.image_src"
-          mode="aspectFill"
-        />
+      <swiper-item v-for="item in swiperData" :key="item.goods_id">
+        <image class="swiper_image" :src="item.image_src" mode="aspectFill" />
       </swiper-item>
     </swiper>
     <!-- 3.0 入口导航 -->
@@ -34,19 +27,11 @@
         :open-type="item.open_type"
         :url="item.navigator_url"
       >
-        <image
-          class="nav_image"
-          :src="item.image_src"
-          mode="aspectFill"
-        />
+        <image class="nav_image" :src="item.image_src" mode="aspectFill" />
       </navigator>
     </view>
     <!-- 4.0 首页楼层 -->
-    <view
-      v-for="(item,index) in floorData"
-      :key="index"
-      class="floor"
-    >
+    <view v-for="(item, index) in floorData" :key="index" class="floor">
       <!-- 楼层标题 -->
       <view class="floor_title">
         <image
@@ -70,7 +55,7 @@
             class="floor_list_image"
             :src="item2.image_src"
             mode="aspectFill"
-            :style="'width:'+item2.image_width+'rpx'"
+            :style="'width:' + item2.image_width + 'rpx'"
           />
         </navigator>
       </view>
@@ -82,6 +67,7 @@
 // 2. script 里面的写法和 Vue 的完全一样，但是注意生命周期请使用小城市生命周期
 // 1. 导入组件
 import Search from "@/components/Search/index.vue";
+import { floorData, homeNav, homeSwiper } from "@/api";
 export default {
   // 2. 注册组件
   components: {
@@ -96,41 +82,26 @@ export default {
     };
   },
   // 但是注意生命周期请使用小程序生命周期
-  onLoad() {
+  async onLoad() {
     // 1.0 发送网络请求 - 获取轮播图数据
-    uni.request({
-      url: "https://api-hmugo-web.itheima.net/api/public/v1/home/swiperdata",
-      success: (res) => {
-        // console.log(res.data.message);
-        // 更新到 data 中
-        this.swiperData = res.data.message;
-      },
-    });
+    const res1 = await homeSwiper();
+    this.swiperData = res1.data.message;
+
     // 2.0 获取入口导航数据
-    uni.request({
-      url: "https://api-hmugo-web.itheima.net/api/public/v1/home/catitems",
-      success: (res) => {
-        this.navData = res.data.message;
-      },
-    });
+    const res2 = await homeNav();
+    this.navData = res2.data.message;
+
     // 3.0 获取楼层数据
-    uni.request({
-      url: "https://api-hmugo-web.itheima.net/api/public/v1/home/floordata",
-      success: (res) => {
-        // this.floorData = res.data.message;
-        // 两层 forach 循环遍历，替换所有错误的路径
-        // "/pages/goods_list?query=服饰"   修复为   "/pages/goods_list/main?query=服饰"
-        res.data.message.forEach((item) => {
-          item.product_list.forEach((item2) => {
-            // replace 替换，在问号前面添加一级 /main
-            item2.navigator_url = item2.navigator_url.replace("?", "/main?");
-          });
-        });
-        // console.log(res.data.message);
-        // 把修改后的数据更新到 floorData 中
-        this.floorData = res.data.message;
-      },
+    const res3 = await floorData();
+    res3.data.message.forEach((item) => {
+      item.product_list.forEach((item2) => {
+        // replace 替换，在问号前面添加一级 /main
+        item2.navigator_url = item2.navigator_url.replace("?", "/main?");
+      });
     });
+    // console.log(res.data.message);
+    // 把修改后的数据更新到 floorData 中
+    this.floorData = res3.data.message;
   },
   // 事件写 methods 中
   methods: {},
