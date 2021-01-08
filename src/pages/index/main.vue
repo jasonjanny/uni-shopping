@@ -81,7 +81,7 @@
 <script>
 // 2. script 里面的写法和 Vue 的完全一样，但是注意生命周期请使用小城市生命周期
 // 1. 导入组件
-import Search from "@/components/Search/index";
+import Search from "@/components/Search/index.vue";
 export default {
   // 2. 注册组件
   components: {
