@@ -118,7 +118,7 @@ export default {
       uni.request({
         url: "https://api-hmugo-web.itheima.net/api/public/v1/categories",
         success: (res) => {
-          console.log(res.data.message);
+          // console.log(res.data.message);
           // 先把后端返回的数据存到临时变量中
           const cateAll = res.data.message;
           // 往小程序本地存储写入数据，小程序的本地存储会记录数据的类型

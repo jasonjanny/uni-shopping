@@ -20,3 +20,11 @@ export const floorData = ()=>{
         url:'/home/floordata'
     })
 }
+
+export const getGoodsList = ()=>{
+    return request({
+        method:'get',
+        url:'/goods/search'
+    })
+}
+

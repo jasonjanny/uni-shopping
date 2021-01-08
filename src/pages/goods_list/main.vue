@@ -1,9 +1,17 @@
 <template>
+<view>
+  <Search />
   <view>列表页{{ cid }}</view>
+</view>
 </template>
 
 <script>
+import { getGoodsList } from "@/api";
+import Search from '@/components/Search/index.vue'
 export default {
+  components:{
+    Search
+  },
   data() {
     return {
       cid: "",
@@ -22,20 +30,15 @@ export default {
   },
   methods: {
     // 获取商品列表数据
-    getListData() {
-      uni.request({
-        url: "https://api-hmugo-web.itheima.net/api/public/v1/goods/search",
-        data: {
-          cid: this.cid,
-          pagenum: this.pagenum,
-          pagesize: this.pagesize,
-        },
-        success: (res) => {
-          // console.log(res.data.message);
-          const { goods } = res.data.message;
-          this.goods = goods;
-        },
+    async getListData() {
+      const res = await getGoodsList({
+        cid: this.cid,
+        pagenum: this.pagenum,
+        pagesize: this.pagesize,
       });
+      console.log(res.data.message);
+      const { goods } = res.data.message;
+      this.goods = goods;
     },
   },
 };
