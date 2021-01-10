@@ -32,4 +32,15 @@ page {
   height: 20rpx;
   background-color: #f9f9f9;
 }
+.opentype_wrap{
+	position: relative;
+	.opentype_button{
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		opacity: 0;
+	}
+}
 </style>

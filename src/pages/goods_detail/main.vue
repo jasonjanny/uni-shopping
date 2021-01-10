@@ -1,15 +1,8 @@
 <template>
   <view>
     <!-- 1.0 商品滑动展示模块 -->
-    <swiper
-      class="swiper"
-      indicator-dots
-      indicator-active-color="#bc9ee5"
-    >
-      <swiper-item
-        v-for="(item,index) in pics"
-        :key="item.pics_id"
-      >
+    <swiper class="swiper" indicator-dots indicator-active-color="#bc9ee5">
+      <swiper-item v-for="(item, index) in pics" :key="item.pics_id">
         <image
           class="swiper_image"
           :src="item.pics_big_url"
@@ -21,8 +14,10 @@
     <!-- 2.0 商品信息 -->
     <view class="info">
       <view class="info_head">
-        <text class="price">{{goods_price}}</text>
-        <view class="iconfont icon-zhuanfa"></view>
+        <text class="price">{{ goods_price }}</text>
+        <view class="iconfont icon-zhuanfa opentype_wrap">
+          <button class="opentype_button" open-type="share"></button>
+        </view>
         <view class="iconfont icon-shoucang1"></view>
       </view>
       <view class="info_name">
@@ -38,7 +33,8 @@
     </view>
     <!-- 4.0 底部固定栏 -->
     <view class="bottom">
-      <view class="icon_item">
+      <view class="icon_item opentype_wrap">
+        <button class="opentype_button" open-type="share"></button>
         <view class="iconfont icon-kefu"></view>
         <text class="icon_item_text">联系客服</text>
       </view>
@@ -99,7 +95,7 @@ export default {
     // 调用预览大图的功能
     previewImageHandle(current) {
       // 由于后端返回的数据不符合小程序接口的格式要求，所以需要 map 处理一下再使用
-      const urls = this.pics.map(item => item.pics_big);
+      const urls = this.pics.map((item) => item.pics_big);
       console.log(urls);
       // 🧨注意：urls 参数规定：数组的每一项必须是字符串
       uni.previewImage({ current, urls });
