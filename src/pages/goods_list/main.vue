@@ -2,14 +2,7 @@
   <view>
     <Search />
     <Tabs @getIndex="setIndex" :tabsData="tabsData" />
-    <view class="goods_list">
-      <view class="goods_item">
-        <image class="goods_img" src="" mode="" />
-        <view class="goods_info"></view>
-        <view class="goods_name"></view>
-        <view class="goods_price"></view>
-      </view>
-    </view>
+    <GoodsItem v-for="item in goods" :key="item.goods_id" :item="item" />
   </view>
 </template>
 
@@ -17,10 +10,12 @@
 import { getGoodsList } from "@/api";
 import Search from "@/components/Search/index.vue";
 import Tabs from "@/components/Tabs/index.vue";
+import GoodsItem from "@/components/GoodItem/index.vue";
 export default {
   components: {
     Search,
     Tabs,
+    GoodsItem,
   },
   data() {
     return {
@@ -63,33 +58,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.goods_list {
-  .goods_item {
-    display: flex;
-    padding: 20rpx;
-    .goods_img {
-      width: 190rpx;
-      height: 190rpx;
-    }
-    .goods_info {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      margin-left: 20rpx;
-    }
-
-    .goods_name {
-      font-size: 24rpx;
-    }
-
-    .goods_price {
-      font-size: 26rpx;
-      &::before {
-        content: "￥";
-        font-size: 80%;
-        margin-right: 4rpx;
-      }
-    }
-  }
+.tips {
+  height: 100rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
