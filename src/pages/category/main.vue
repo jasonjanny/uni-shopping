@@ -4,33 +4,23 @@
     <Search />
     <!-- 2.0 分类主体 -->
     <view class="cate">
-      <scroll-view
-        class="cate_left"
-        scroll-y
-      >
+      <scroll-view class="cate_left" scroll-y>
         <view
-          v-for="(item,index) in cateLeft"
+          v-for="(item, index) in cateLeft"
           :key="item.cat_id"
           class="cate_left_item"
           @tap="changeTabs(index)"
           :class="{
-            active: activeIndex === index
+            active: activeIndex === index,
           }"
         >
           {{ item.cat_name }}
         </view>
       </scroll-view>
       <!-- 右边滚动容器 -->
-      <scroll-view
-        class="cate_right"
-        scroll-y
-      >
+      <scroll-view class="cate_right" scroll-y>
         <!-- 第一层循环 -->
-        <view
-          class="floor"
-          v-for="item in cateRight"
-          :key="item.cat_id"
-        >
+        <view class="floor" v-for="item in cateRight" :key="item.cat_id">
           <view class="title">{{ item.cat_name }}</view>
           <view class="list">
             <!-- 第二层循环 -->
@@ -39,6 +29,7 @@
               class="item"
               v-for="item2 in item.children"
               :key="item2.cat_id"
+              hover-class="none"
             >
               <image
                 class="item_image"
@@ -46,7 +37,7 @@
                 lazy-load
                 mode="aspectFill"
               />
-              <text class="item_text">{{item2.cat_name}}</text>
+              <text class="item_text">{{ item2.cat_name }}</text>
             </navigator>
           </view>
         </view>
