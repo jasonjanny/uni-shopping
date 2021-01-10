@@ -33,3 +33,11 @@ export const getGoodsList = (data)=>{
     })
 }
 
+// 获取商品详情
+export const getGoodsDetail = (data) => {
+    return request({
+      method: 'GET',
+      url: '/goods/detail',
+      data,
+    })
+  }
