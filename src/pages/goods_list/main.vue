@@ -1,16 +1,26 @@
 <template>
-<view>
-  <Search />
-  <view>列表页{{ cid }}</view>
-</view>
+  <view>
+    <Search />
+    <Tabs @getIndex="setIndex" :tabsData="tabsData" />
+    <view class="goods_list">
+      <view class="goods_item">
+        <image class="goods_img" src="" mode="" />
+        <view class="goods_info"></view>
+        <view class="goods_name"></view>
+        <view class="goods_price"></view>
+      </view>
+    </view>
+  </view>
 </template>
 
 <script>
 import { getGoodsList } from "@/api";
-import Search from '@/components/Search/index.vue'
+import Search from "@/components/Search/index.vue";
+import Tabs from "@/components/Tabs/index.vue";
 export default {
-  components:{
-    Search
+  components: {
+    Search,
+    Tabs,
   },
   data() {
     return {
@@ -18,6 +28,11 @@ export default {
       pagenum: 1,
       pagesize: 10,
       goods: [],
+      tabsData: [
+        { id: 1, text: "综合" },
+        { id: 2, text: "销量" },
+        { id: 3, text: "价格" },
+      ],
     };
   },
   // 在 onLoad 生命周期函数中，可以获取到页面参数
@@ -40,9 +55,41 @@ export default {
       const { goods } = res.data.message;
       this.goods = goods;
     },
+    setIndex() {
+      console.log(111);
+    },
   },
 };
 </script>
 
-<style>
+<style lang="less" scoped>
+.goods_list {
+  .goods_item {
+    display: flex;
+    padding: 20rpx;
+    .goods_img {
+      width: 190rpx;
+      height: 190rpx;
+    }
+    .goods_info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      margin-left: 20rpx;
+    }
+
+    .goods_name {
+      font-size: 24rpx;
+    }
+
+    .goods_price {
+      font-size: 26rpx;
+      &::before {
+        content: "￥";
+        font-size: 80%;
+        margin-right: 4rpx;
+      }
+    }
+  }
+}
 </style>
