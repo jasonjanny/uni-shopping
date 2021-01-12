@@ -97,6 +97,11 @@
 				"name": "pages/goods_list/main", //模式名称
 				"path": "pages/goods_list/main", //启动页面，必选
 				"query": "" //启动参数，在页面的onLoad函数里面得到。
+			},
+			{
+				"name": "pages/cart/main", //模式名称
+				"path": "pages/cart/main", //启动页面，必选
+				"query": "" //启动参数，在页面的onLoad函数里面得到。
 			}
 		]
 	}
