@@ -18,7 +18,7 @@
         <view class="iconfont icon-zhuanfa opentype_wrap">
           <button class="opentype_button" open-type="share"></button>
         </view>
-        <view class="iconfont icon-shoucang1"></view>
+        <view class="iconfont icon-shoucang1" @tap="collectHandle"></view>
       </view>
       <view class="info_name">
         {{ goods_name }}
@@ -34,15 +34,20 @@
     <!-- 4.0 底部固定栏 -->
     <view class="bottom">
       <view class="icon_item opentype_wrap">
-        <button class="opentype_button" open-type="share"></button>
+        <button class="opentype_button" open-type="contact"></button>
         <view class="iconfont icon-kefu"></view>
         <text class="icon_item_text">联系客服</text>
       </view>
-      <view class="icon_item">
+      <navigator
+        class="icon_item"
+        open-type="switchTab"
+        url="/pages/cart/main"
+        hover-class="none"
+      >
         <view class="iconfont icon-gouwuche"></view>
         <text class="icon_item_text">购物车</text>
-      </view>
-      <view class="button_item">加入购物车</view>
+      </navigator>
+      <view class="button_item" @tap="addCartHandle">加入购物车</view>
       <view class="button_item">立即购买</view>
     </view>
   </view>
@@ -73,11 +78,18 @@ export default {
       // 传递 id 获取商品详情数据
       const res = await getGoodsDetail({ goods_id: this.goods_id });
       // 提取出页面渲染所需的数据即可
-      let { pics, goods_price, goods_name, goods_introduce } = res.data.message;
+      let {
+        pics,
+        goods_price,
+        goods_name,
+        goods_introduce,
+        goods_small_logo,
+      } = res.data.message;
       // 按需绑定到 data 中
       this.pics = pics;
       this.goods_price = goods_price;
       this.goods_name = goods_name;
+      this.goods_small_logo = goods_small_logo;
       // 获取系统信息
       const { system } = uni.getSystemInfoSync();
       // 把系统信息先转换成小写，在判断是否包含 ios 关键词，如果包含说明是 IOS 平台
@@ -99,6 +111,47 @@ export default {
       console.log(urls);
       // 🧨注意：urls 参数规定：数组的每一项必须是字符串
       uni.previewImage({ current, urls });
+    },
+    // 点击收藏按钮
+    collectHandle() {
+      uni.showToast({
+        title: "功能升级中...",
+        duration: 1000,
+        icon: "none",
+      });
+    },
+
+    addCartHandle() {
+      const cartList = uni.getStorageSync("cartList") || [];
+      // 判断本地存储中是否已经添加过该商品
+      const index = cartList.findIndex(
+        (item) => item.goods_id === this.goods_id
+      );
+      console.log(this.goods_id);
+      console.log(index);
+
+      if (index === -1) {
+        cartList.push({
+          goods_id: this.goods_id,
+          goods_small_logo: this.goods_small_logo,
+          goods_name: this.goods_name,
+          goods_price: this.goods_price,
+          goods_selected: true,
+          goods_count: 1,
+        });
+      } else {
+        cartList[index].goods_count += 1;
+      }
+
+      // 存储到本地
+      uni.setStorageSync("cartList", cartList);
+      console.log(cartList);
+      uni.showToast({
+        title: "加入成功",
+        duration: 1000,
+        // 添加透明蒙层。防止触摸穿透
+        mask: true,
+      });
     },
   },
 };
